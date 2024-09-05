@@ -12,11 +12,13 @@ const { id, title, artists, color, cover } = playlist;
 const artistsString = artists.join(", ");
 ---
 
-<article class="group relative">
+<article
+  class="group relative hover:bg-zinc-800 shadow-lg hover:shadow-xl bg-zinc-500/30 rounded-md ransi transition-all duration-300"
+>
   <div
     class="absolute z-10 right-4 bottom-20 translate-y-4 transition-all duration-500 opacity-0 group-hover:opacity-100 group-hover:translate-y-0"
   >
-    <CardPlayButton id={id} />
+    <CardPlayButton id={id} client:visible />
   </div>
   <a
     href={`/playlist/${id}`}

@@ -1,9 +1,21 @@
 import { Pause, Play } from "./Player";
+import { usePlayerStore } from "@/store/playerStore.ts";
 
-const CardPlayButton = ({ id }: { id: string }) => (
-  <div className="card-play-button rounded-full bg-green-500 p-4">
-    <Play />
-  </div>
-);
+const CardPlayButton = ({ id }: { id: string }) => {
+  const { currentMusic, isPlaying, setIsPlaying, setCurrentMusic } =
+    usePlayerStore((state) => state);
+
+  const handleClick = () => {
+    setIsPlaying(!isPlaying);
+  };
+  return (
+    <button
+      onClick={handleClick}
+      className="card-play-button rounded-full bg-green-500 p-4"
+    >
+      {isPlaying ? <Pause /> : <Play />}
+    </button>
+  );
+};
 
 export default CardPlayButton;
