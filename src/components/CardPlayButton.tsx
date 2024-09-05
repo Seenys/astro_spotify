@@ -5,15 +5,35 @@ const CardPlayButton = ({ id }: { id: string }) => {
   const { currentMusic, isPlaying, setIsPlaying, setCurrentMusic } =
     usePlayerStore((state) => state);
 
+  const isPlayingPlaylist = isPlaying && currentMusic?.playlist.id === id;
+
   const handleClick = () => {
-    setIsPlaying(!isPlaying);
+    if (isPlayingPlaylist) {
+      setIsPlaying(false);
+      return;
+    }
+    //promise
+    fetch(`/api/get-info-playlist.json?id=${id}`)
+      .then((res) => res.json())
+      .then((data) => {
+        const { playlist, songs } = data;
+        setIsPlaying(true);
+        setCurrentMusic({ playlist, songs, song: songs[0] });
+      });
+
+    //async await
+    // const res = await fetch(`/api/get-info-playlist.json?id=${id}`);
+    // const data = await res.json();
+    // const { playlist, songs } = data;
+    // setIsPlaying(true);
+    // setCurrentMusic({ playlist, songs, song: songs[0] });
   };
   return (
     <button
       onClick={handleClick}
       className="card-play-button rounded-full bg-green-500 p-4"
     >
-      {isPlaying ? <Pause /> : <Play />}
+      {isPlayingPlaylist ? <Pause /> : <Play />}
     </button>
   );
 };
